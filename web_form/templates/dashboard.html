@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ENTC AI-Based Timetable Generation System</title>
+<style>
+:root{font-family:Inter,Segoe UI,Arial,sans-serif;color:#172033;background:#f3f6fb}*{box-sizing:border-box}body{margin:0}.top{background:#172554;color:#fff;padding:30px 20px}.wrap{max-width:1080px;margin:auto;padding:24px 18px}.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.8}.top h1{margin:8px 0;font-size:clamp(24px,4vw,36px)}.top p{margin:0;color:#dbeafe}.actions{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 24px}.btn{display:inline-block;text-decoration:none;border:0;border-radius:9px;padding:11px 15px;background:#1d4ed8;color:#fff;font-weight:650;cursor:pointer}.btn.secondary{background:#fff;color:#1e3a8a;border:1px solid #cbd5e1}.section-title{margin:24px 0 12px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}.card{background:#fff;border:1px solid #e1e7f0;border-radius:14px;padding:18px;box-shadow:0 3px 12px #0f172a08}.card h3{margin:0 0 6px}.status{font-size:12px;font-weight:700;display:inline-block;padding:5px 8px;border-radius:999px;background:#e2e8f0;color:#334155}.status.ready{background:#dcfce7;color:#166534}.card p{color:#526078;line-height:1.45;min-height:40px}.card form{margin-top:14px}.note{border-left:4px solid #64748b;background:#fff;padding:14px 16px;border-radius:8px;color:#46536a;line-height:1.5}.foot{font-size:12px;color:#64748b;margin:24px 0}
+</style></head><body>
+<header class="top"><div class="wrap"><div class="eyebrow">KJ College of Engineering & Management Research · ENTC</div><h1>ENTC AI-Based Timetable Generation System</h1><p>Machine Learning Project — Multi-Semester Timetable Management</p></div></header>
+<main class="wrap">
+<div class="actions"><a class="btn secondary" href="/data-form">Open Data Collection Form</a></div>
+<h2 class="section-title">Select Semester</h2>
+<div class="grid">
+<article class="card"><span class="status">Setup required</span><h3>Semester III</h3><p>Curriculum loaded. Faculty, rooms, batches and configuration must be completed before generation.</p><div class="actions"><a class="btn" href="/semester/3/configure">Configure Data</a><a class="btn secondary" href="/semester/3/readiness">Check Readiness</a></div></article>
+<article class="card"><span class="status">Setup required</span><h3>Semester IV</h3><p>Curriculum loaded. Configure actual resources and batch mappings before generation.</p><div class="actions"><a class="btn" href="/semester/4/configure">Configure Data</a><a class="btn secondary" href="/semester/4/readiness">Check Readiness</a></div></article>
+<article class="card"><span class="status ready">Validated baseline</span><h3>Semester V</h3><p>Uses the existing Semester V solver. The current baseline schedules 37 sessions and passes hard validation.</p><div class="actions"><a class="btn secondary" href="/semester/5/saved">View Saved Timetable</a><form method="post" action="/generate/5"><button class="btn" type="submit">Generate Timetable</button></form></div></article>
+<article class="card"><span class="status">Setup required</span><h3>Semester VI</h3><p>Curriculum loaded. Resource configuration and the internship/OJT scheduling arrangement still need confirmation.</p><div class="actions"><a class="btn" href="/semester/6/configure">Configure Data</a><a class="btn secondary" href="/semester/6/readiness">Check Readiness</a></div></article>
+<article class="card"><span class="status">2019 Pattern</span><h3>Semester VII</h3><p><strong>Curriculum Data Not Available.</strong> This semester follows the 2019 pattern. Timetable generation will be enabled after official curriculum and subject data are added and verified.</p></article>
+<article class="card"><span class="status">2019 Pattern</span><h3>Semester VIII</h3><p><strong>Curriculum Data Not Available.</strong> This semester follows the 2019 pattern. Timetable generation will be enabled after official curriculum and subject data are added and verified.</p></article>
+</div>
+<div class="portal-links" style="margin:18px 0;padding:18px;background:#fff;border:1px solid #d9e1ea;border-radius:8px;">
+<h2 class="section-title">Faculty Portal</h2>
+<p>Faculty can open the portal to sign in and access their portal features. The health page is for checking service status.</p>
+<div class="actions">
+<a class="btn" href="/portal/login">Faculty Portal Login</a>
+<a class="btn secondary" href="/portal/health">Portal Health Check</a>
+</div>
+</div>
+<h2 class="section-title">Project workflow</h2><div class="note"><strong>Configure → Generate → Validate.</strong> Semester V stays on its existing solver. The generic solver will stop safely when a semester lacks required data; it will not invent faculty assignments, rooms, or batch mappings.</div>
+<p class="foot">Local development dashboard · Available while the Flask server is running.</p>
+</main></body></html>

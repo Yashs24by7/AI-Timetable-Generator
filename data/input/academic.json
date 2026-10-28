@@ -1,0 +1,56 @@
+{
+    "college": "KJ College of Engineering and Management Research, Pune",
+    "department": "ENTC",
+    "city": "Pune",
+    "pattern": "2024 Pattern / NEP 2020",
+    "semester": "TE Semester V",
+    "working_days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday"
+    ],
+    "college_start": "08:45",
+    "college_end": "15:45",
+    "short_break": {
+        "start": "10:45",
+        "end": "11:00"
+    },
+    "lunch_break": {
+        "start": "13:00",
+        "end": "13:45"
+    },
+    "periods": [
+        {
+            "code": "P1",
+            "start": "08:45",
+            "end": "09:45"
+        },
+        {
+            "code": "P2",
+            "start": "09:45",
+            "end": "10:45"
+        },
+        {
+            "code": "P3",
+            "start": "11:00",
+            "end": "12:00"
+        },
+        {
+            "code": "P4",
+            "start": "12:00",
+            "end": "13:00"
+        },
+        {
+            "code": "P5",
+            "start": "13:45",
+            "end": "14:45"
+        },
+        {
+            "code": "P6",
+            "start": "14:45",
+            "end": "15:45"
+        }
+    ]
+}

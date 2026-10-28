@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Faculty Portal Login</title><style>
+*{box-sizing:border-box}body{margin:0;background:#eef2f7;color:#172033;font-family:Segoe UI,Arial,sans-serif}
+main{max-width:460px;margin:7vh auto;padding:24px}form,.card{background:white;border:1px solid #d7e0eb;border-radius:14px;padding:24px;box-shadow:0 8px 30px #17365d12}
+h1{font-size:25px;margin-top:0}label{display:block;font-weight:650;margin:14px 0 6px}input,select{width:100%;padding:11px;border:1px solid #bcc9d8;border-radius:8px;font:inherit}
+button{margin-top:18px;background:#17365d;color:white;border:0;border-radius:8px;padding:12px 16px;font-weight:700;cursor:pointer;width:100%}
+.notice{padding:11px;border-radius:8px;background:#fff7ed;color:#9a3412}.muted{color:#607086;font-size:13px}a{color:#1d4ed8}
+</style></head><body><main><form method="post">
+<h1>{{ 'Administrator' if role == 'admin' else 'Faculty' }} sign in</h1>
+<p class="muted">Use your individually provisioned account. Faculty accounts are created by the administrator.</p>
+{% if error %}<p class="notice">{{ error }}</p>{% endif %}
+<input type="hidden" name="_csrf" value="{{ csrf }}"><input type="hidden" name="role" value="{{ role }}">
+<label for="username">Username</label><input id="username" name="username" required autocomplete="username">
+<label for="password">Password</label><input id="password" name="password" type="password" required autocomplete="current-password">
+<button type="submit">Sign in</button>
+<p class="muted"><a href="{{ url_for('index') }}">Back to dashboard</a> · <a href="{{ url_for('portal_login', role='faculty') }}">Faculty login</a> · <a href="{{ url_for('portal_login', role='admin') }}">Admin login</a></p>
+</form></main></body></html>

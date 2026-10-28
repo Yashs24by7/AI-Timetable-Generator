@@ -1,0 +1,38 @@
+{
+    "faculty_assignments": {
+        "Microcontrollers & Applications": [
+            "MD"
+        ],
+        "Cellular Network": [
+            "RGZ"
+        ],
+        "VLSI Design": [
+            "SP"
+        ],
+        "Microcontrollers & VLSI Design Lab": [
+            "SP"
+        ],
+        "Cellular Network Lab": [
+            "PSG"
+        ],
+        "Cloud Computing": [
+            "PSG"
+        ],
+        "Advanced Java Programming": [
+            "RG"
+        ],
+        "Programme Elective Lab": [
+            "RG"
+        ],
+        "Machine Learning": [
+            "SJK"
+        ],
+        "Open Elective": [
+            "GSK"
+        ],
+        "Technical Seminar": [
+            "MD"
+        ]
+    },
+    "faculty_assignments_verified": false
+}

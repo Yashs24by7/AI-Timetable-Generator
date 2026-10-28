@@ -1,0 +1,2071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENTC AI Timetable Data Form</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f4f7fb;
+            color: #1f2937;
+        }
+
+        .container {
+            width: min(1200px, 94%);
+            margin: 30px auto 60px;
+        }
+
+        .header {
+            background: #172554;
+            color: white;
+            padding: 28px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            margin: 0 0 8px;
+            font-size: 28px;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #172554;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .card h3 {
+            color: #334155;
+            margin-bottom: 10px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+        }
+
+        textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .faculty-card {
+            border: 1px solid #dbe3ef;
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            background: #fbfdff;
+        }
+
+        .faculty-header {
+            display: grid;
+            grid-template-columns: 130px 1fr;
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+
+        .expertise-section {
+            margin-top: 14px;
+            padding: 14px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 8px 18px;
+            margin-top: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        .checkbox-item input {
+            width: auto;
+            margin-top: 3px;
+        }
+
+        .status-row {
+            display: grid;
+            grid-template-columns: 1fr 180px;
+            gap: 12px;
+            align-items: end;
+            margin-bottom: 10px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #dbe3ef;
+            padding: 9px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background: #eef2ff;
+        }
+
+        .note {
+            background: #fff7ed;
+            border-left: 4px solid #f97316;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+
+        .info {
+            background: #eff6ff;
+            border-left: 4px solid #2563eb;
+            padding: 12px 14px;
+            border-radius: 6px;
+            margin: 12px 0;
+        }
+
+        .submit-area {
+            text-align: center;
+            padding: 10px 0 30px;
+        }
+
+        button {
+            border: none;
+            background: #1d4ed8;
+            color: white;
+            padding: 14px 30px;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1e40af;
+        }
+
+        .small {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        @media (max-width: 800px) {
+            .grid,
+            .grid-3,
+            .checkbox-grid,
+            .faculty-header,
+            .status-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>ENTC AI Timetable Generator</h1>
+        <p>Academic, batch, faculty, room and scheduling-resource input form</p>
+    </div>
+
+    <form method="POST" action="/submit" enctype="multipart/form-data">
+
+        <!-- ==================================================
+             ACADEMIC INFORMATION
+        =================================================== -->
+
+        <div class="card">
+            <h2>1. Academic Information</h2>
+
+            <div class="grid">
+
+                <div>
+                    <label>College Name</label>
+                    <input
+                        type="text"
+                        name="college_name"
+                        value="KJ College of Engineering and Management Research"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Department</label>
+                    <input
+                        type="text"
+                        name="department"
+                        value="ENTC"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Academic Year</label>
+                    <input
+                        type="text"
+                        name="academic_year"
+                        value="2026-27"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Year</label>
+                    <input
+                        type="text"
+                        name="year"
+                        value="TE"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Semester</label>
+                    <input
+                        type="text"
+                        name="semester"
+                        value="Semester V"
+                        required
+                    >
+                </div>
+
+                <div>
+                    <label>Pattern</label>
+                    <input
+                        type="text"
+                        name="pattern"
+                        value="2024 Pattern / NEP 2020"
+                        required
+                    >
+                </div>
+
+            </div>
+
+            <br>
+
+            <div class="grid-3">
+
+                <div>
+                    <label>Working Days</label>
+                    <input
+                        type="text"
+                        name="working_days"
+                        value="Monday-Friday"
+                    >
+                </div>
+
+                <div>
+                    <label>College Start Time</label>
+                    <input
+                        type="text"
+                        name="college_start"
+                        value="08:45"
+                    >
+                </div>
+
+                <div>
+                    <label>College End Time</label>
+                    <input
+                        type="text"
+                        name="college_end"
+                        value="15:45"
+                    >
+                </div>
+
+                <div>
+                    <label>Short Break</label>
+                    <input
+                        type="text"
+                        name="short_break"
+                        value="10:45-11:00"
+                    >
+                </div>
+
+                <div>
+                    <label>Lunch Break</label>
+                    <input
+                        type="text"
+                        name="lunch_break"
+                        value="13:00-13:45"
+                    >
+                </div>
+
+                <div>
+                    <label>Regular Periods</label>
+                    <input
+                        type="text"
+                        name="period_structure"
+                        value="P1 08:45-09:45; P2 09:45-10:45; P3 11:00-12:00; P4 12:00-13:00; P5 13:45-14:45; P6 14:45-15:45"
+                    >
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- ==================================================
+             BATCH INFORMATION
+        =================================================== -->
+
+        <div class="card">
+            <h2>2. Batch Information</h2>
+
+            <div class="info">
+                Practical groups are batch-wise. T1, T2 and T3 can be scheduled
+                in parallel when sufficient faculty and laboratory resources exist.
+            </div>
+
+            <div class="table-wrap">
+
+                <table id="batch-table">
+
+                    <thead>
+                        <tr>
+                            <th>Batch</th>
+                            <th>Students</th>
+                            <th>Elective / Group</th>
+                            <th>Roll Numbers</th><th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="batch_code[]"
+                                    value="T1"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="batch_students[]"
+                                    value="32"
+                                    min="1"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    name="batch_elective[]"
+                                    value="Cloud Computing"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    name="batch_rolls[]"
+                                    value="1-32"
+                                >
+                            </td>
+                        <td><button type="button" class="batch-remove">Remove</button></td></tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="batch_code[]"
+                                    value="T2"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="batch_students[]"
+                                    value="31"
+                                    min="1"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    name="batch_elective[]"
+                                    value="Cloud Computing"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    name="batch_rolls[]"
+                                    value="33-63"
+                                >
+                            </td>
+                        <td><button type="button" class="batch-remove">Remove</button></td></tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="batch_code[]"
+                                    value="T3"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="batch_students[]"
+                                    value="17"
+                                    min="1"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    name="batch_elective[]"
+                                    value="Advanced Java Programming"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    name="batch_rolls[]"
+                                    value="64-80"
+                                >
+                            </td>
+                        <td><button type="button" class="batch-remove">Remove</button></td></tr>
+
+                    </tbody>
+
+                </table>
+<div style="margin-top:16px">
+  <button type="button" id="add-batch">+ Add Batch</button>
+  <span id="batch-count">3 batches</span>
+</div>
+
+
+            </div>
+        </div>
+
+
+        <!-- ==================================================
+             FACULTY
+        =================================================== -->
+
+        <div class="card">
+
+            <h2>3. Faculty Expertise & Availability</h2>
+
+            <div class="info">
+                <strong>Important:</strong>
+                Select every subject that the faculty member can actually
+                teach or supervise this semester. If you do not know the
+                allocation, leave that category as <strong>Not specified</strong>.
+                The solver will not treat an unspecified allocation as confirmed.
+            </div>
+
+
+            <!-- PSG -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+
+                    <div>
+                        <label>Faculty Code</label>
+                        <input
+                            name="faculty_code[]"
+                            value="PSG"
+                            readonly
+                        >
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input
+                            name="faculty_name[]"
+                            value="Poonam Gham"
+                            required
+                        >
+                    </div>
+
+                </div>
+
+
+                <div class="expertise-section">
+
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="known">Specified</option>
+                        <option value="not_specified">Not specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_theory[]"
+                                   value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_theory[]"
+                                   value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_theory[]"
+                                   value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_theory[]"
+                                   value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_theory[]"
+                                   value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_theory[]"
+                                   value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="expertise-section">
+
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_tutorial[]"
+                                   value="Machine Learning">
+                            Machine Learning
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="expertise-section">
+
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox"
+                                   name="faculty_practical[]"
+                                   value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- RG -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="RG" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="Rohit Gawde" required>
+                    </div>
+
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- RGZ -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="RGZ" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="R.Z. Zope" required>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+                    <select name="faculty_theory_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+                    <select name="faculty_practical_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- MD -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="MD" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="Manoj Deshmukh" required>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- GSK -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="GSK" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="Ganesh Kadam" required>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- VDG -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="VDG" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="Vivek Ghanekar" required>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="known">Specified</option>
+                        <option value="not_specified">Not specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="known">Specified</option>
+                        <option value="not_specified">Not specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SJK -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="SJK" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="Shilpa Kale" required>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="known">Specified</option>
+                        <option value="not_specified">Not specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- SP -->
+
+            <div class="faculty-card">
+
+                <div class="faculty-header">
+                    <div>
+                        <label>Faculty Code</label>
+                        <input name="faculty_code[]" value="SP" readonly>
+                    </div>
+
+                    <div>
+                        <label>Faculty Name</label>
+                        <input name="faculty_name[]" value="Sabhiha Parveen" required>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Theory</h3>
+
+                    <select name="faculty_theory_status[]">
+                        <option value="known">Specified</option>
+                        <option value="not_specified">Not specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="VLSI Design">
+                            VLSI Design
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Microcontrollers & Applications">
+                            Microcontrollers & Applications
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cellular Network">
+                            Cellular Network
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Cloud Computing">
+                            Cloud Computing
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Advanced Java Programming">
+                            Advanced Java Programming
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_theory[]" value="Sustainability Development">
+                            Sustainability Development
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Tutorial</h3>
+
+                    <select name="faculty_tutorial_status[]">
+                        <option value="not_specified">Not specified</option>
+                        <option value="known">Specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_tutorial[]" value="Machine Learning">
+                            Machine Learning
+                        </label>
+                    </div>
+                </div>
+
+                <div class="expertise-section">
+                    <h3>Practical / Lab</h3>
+
+                    <select name="faculty_practical_status[]">
+                        <option value="known">Specified</option>
+                        <option value="not_specified">Not specified</option>
+                    </select>
+
+                    <div class="checkbox-grid">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Microcontrollers & VLSI Design Lab">
+                            Microcontrollers & VLSI Design Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cellular Network Lab">
+                            Cellular Network Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Programme Elective Lab">
+                            Programme Elective Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Cloud Computing Lab">
+                            Cloud Computing Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Advanced Java Programming Lab">
+                            Advanced Java Programming Lab
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Machine Learning Practical">
+                            Machine Learning Practical
+                        </label>
+
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="faculty_practical[]" value="Technical Seminar">
+                            Technical Seminar
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- ==================================================
+                 GSK WAS ALREADY INCLUDED ABOVE
+                 ================================================== -->
+
+        </div>
+
+
+        <!-- ==================================================
+             ROOMS
+        =================================================== -->
+
+        
+<div class="card" id="faculty-controls">
+  <button type="button" id="add-faculty">+ Add Faculty</button>
+  <span id="faculty-count" style="margin-left:12px"></span>
+  <p>New faculty cards start with unspecified expertise. Confirm assignments before submission.</p>
+</div>
+
+<div class="card">
+
+            <h2>4. Rooms & Laboratories</h2>
+
+            <div class="info">
+                Lab capacity is treated as 48 students maximum
+                (24 computers x up to 2 students per computer).
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Room Code</th>
+                            <th>Capacity</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="room_code[]"
+                                    value="312"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="room_capacity[]"
+                                    value="80"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <select name="room_type[]">
+                                    <option value="classroom" selected>
+                                        Classroom
+                                    </option>
+                                    <option value="lab">
+                                        Lab
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="room_code[]"
+                                    value="319"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="room_capacity[]"
+                                    value="50"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <select name="room_type[]">
+                                    <option value="classroom" selected>
+                                        Classroom
+                                    </option>
+                                    <option value="lab">
+                                        Lab
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="room_code[]"
+                                    value="322"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="room_capacity[]"
+                                    value="80"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <select name="room_type[]">
+                                    <option value="classroom" selected>
+                                        Classroom
+                                    </option>
+                                    <option value="lab">
+                                        Lab
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="room_code[]"
+                                    value="A317"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="room_capacity[]"
+                                    value="48"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <select name="room_type[]">
+                                    <option value="lab" selected>
+                                        Lab
+                                    </option>
+                                    <option value="classroom">
+                                        Classroom
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="room_code[]"
+                                    value="A318"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="room_capacity[]"
+                                    value="48"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <select name="room_type[]">
+                                    <option value="lab" selected>
+                                        Lab
+                                    </option>
+                                    <option value="classroom">
+                                        Classroom
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>
+                                <input
+                                    name="room_code[]"
+                                    value="A320"
+                                    readonly
+                                >
+                            </td>
+
+                            <td>
+                                <input
+                                    type="number"
+                                    name="room_capacity[]"
+                                    value="48"
+                                    required
+                                >
+                            </td>
+
+                            <td>
+                                <select name="room_type[]">
+                                    <option value="lab" selected>
+                                        Lab
+                                    </option>
+                                    <option value="classroom">
+                                        Classroom
+                                    </option>
+                                </select>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+
+
+        <!-- ==================================================
+             RULES
+        =================================================== -->
+
+        <div class="card">
+
+            <h2>5. Timetable Rules</h2>
+
+            <div class="grid">
+
+                <div>
+                    <label>Practical Parallelism</label>
+
+                    <select name="practical_parallel">
+                        <option value="Required" selected>
+                            Required
+                        </option>
+
+                        <option value="Preferred">
+                            Preferred
+                        </option>
+
+                        <option value="Not Required">
+                            Not Required
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Faculty Double Booking</label>
+
+                    <select name="faculty_conflict_rule">
+                        <option value="Strict" selected>
+                            Strict - Never allow
+                        </option>
+
+                        <option value="Allow">
+                            Allow
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Room Capacity</label>
+
+                    <select name="room_capacity_rule">
+                        <option value="Strict" selected>
+                            Strict
+                        </option>
+
+                        <option value="Preferred">
+                            Preferred
+                        </option>
+                    </select>
+                </div>
+
+                <div>
+                    <label>Student Batch Conflict</label>
+
+                    <select name="student_conflict_rule">
+                        <option value="Strict" selected>
+                            Strict - Never allow
+                        </option>
+
+                        <option value="Allow">
+                            Allow
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- ==================================================
+             NOTES
+        =================================================== -->
+
+        <div class="card">
+
+            <h2>6. Additional Notes</h2>
+
+            <textarea
+                name="notes"
+                placeholder="Enter any faculty availability notes, room restrictions, special timetable requirements, etc."
+            ></textarea>
+
+        </div>
+
+
+        <!-- ==================================================
+             SUPPORTING FILES
+        =================================================== -->
+
+        <div class="card">
+
+            <h2>7. Supporting Documents</h2>
+
+            <p class="small">
+                Upload timetable references, faculty workload sheets,
+                room lists, syllabus files or other supporting documents.
+            </p>
+
+            <input
+                type="file"
+                name="supporting_files"
+                multiple
+            >
+
+        </div>
+
+
+        <!-- ==================================================
+             SUBMIT
+        =================================================== -->
+
+        <div class="submit-area">
+
+            <button type="submit">
+                Submit Timetable Data
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+(function () {
+  const table = document.getElementById('batch-table');
+  const add = document.getElementById('add-batch');
+  const count = document.getElementById('batch-count');
+  if (!table || !add || !count) return;
+  const body = table.tBodies[0];
+
+  function update() {
+    count.textContent = body.rows.length + ' batches';
+  }
+
+  function nextCode() {
+    let n = 1;
+    const codes = Array.from(body.querySelectorAll(
+      'input[name="batch_code[]"]'
+    )).map(x => x.value.trim().toUpperCase());
+    while (codes.includes('T' + n)) n++;
+    return 'T' + n;
+  }
+
+  add.addEventListener('click', function () {
+    const code = nextCode();
+    const row = body.insertRow();
+    const values = [
+      '<input name="batch_code[]" value="' + code + '" readonly>',
+      '<input type="number" name="batch_students[]" value="1" min="1" required>',
+      '<input name="batch_elective[]" placeholder="Elective / group" required>',
+      '<input name="batch_rolls[]" placeholder="e.g. 81-100">',
+      '<button type="button" class="batch-remove">Remove</button>'
+    ];
+    values.forEach(function (value) {
+      const cell = row.insertCell();
+      cell.innerHTML = value;
+    });
+    update();
+  });
+
+  table.addEventListener('click', function (event) {
+    const button = event.target.closest('.batch-remove');
+    if (!button) return;
+    if (body.rows.length <= 1) {
+      alert('At least one batch must remain.');
+      return;
+    }
+    button.closest('tr').remove();
+    update();
+  });
+
+  update();
+})();
+</script>
+
+
+<script>
+(function () {
+  const add = document.getElementById('add-faculty');
+  const count = document.getElementById('faculty-count');
+  const controls = document.getElementById('faculty-controls');
+  if (!add || !count || !controls) return;
+
+  function cards() {
+    return Array.from(document.querySelectorAll('.faculty-card'))
+      .filter(card => card.dataset.addedFaculty === 'yes' ||
+        card.querySelector('input[name="faculty_code[]"]'));
+  }
+
+  function update() {
+    count.textContent = cards().length + ' faculty entries';
+  }
+
+  function uniqueCode() {
+    const used = new Set(Array.from(document.querySelectorAll(
+      'input[name="faculty_code[]"]'
+    )).map(x => x.value.trim().toUpperCase()));
+    let n = 1;
+    while (used.has('NEW' + n)) n++;
+    return 'NEW' + n;
+  }
+
+  add.addEventListener('click', function () {
+    const existing = document.querySelector('.faculty-card');
+    if (!existing) {
+      alert('No faculty template card found.');
+      return;
+    }
+
+    const card = existing.cloneNode(true);
+    card.dataset.addedFaculty = 'yes';
+
+    const code = uniqueCode();
+    const codeInput = card.querySelector('input[name="faculty_code[]"]');
+    const nameInput = card.querySelector('input[name="faculty_name[]"]');
+    if (codeInput) {
+      codeInput.value = code;
+      codeInput.readOnly = true;
+    }
+    if (nameInput) {
+      nameInput.value = '';
+      nameInput.placeholder = 'Enter faculty name';
+    }
+
+    card.querySelectorAll('input[type="checkbox"]').forEach(x => {
+      x.checked = false;
+    });
+    card.querySelectorAll('select[name$="_status[]"]').forEach(x => {
+      x.value = 'not_specified';
+    });
+
+    const heading = document.createElement('h3');
+    heading.textContent = 'Additional Faculty';
+    card.insertBefore(heading, card.firstChild);
+
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.textContent = 'Remove Faculty';
+    remove.className = 'remove-added-faculty';
+    remove.style.cssText = 'margin-top:12px;padding:8px 12px;cursor:pointer';
+    card.appendChild(remove);
+
+    controls.parentNode.insertBefore(card, controls);
+    update();
+  });
+
+  document.addEventListener('click', function (event) {
+    const button = event.target.closest('.remove-added-faculty');
+    if (!button) return;
+    const card = button.closest('.faculty-card');
+    if (card && card.dataset.addedFaculty === 'yes') {
+      card.remove();
+      update();
+    }
+  });
+  const facultyForm = document.querySelector('form[action="/submit"]');
+  if (facultyForm) {
+    facultyForm.addEventListener('submit', function () {
+      cards().forEach((card, i) => {
+        ['theory', 'tutorial', 'practical'].forEach(type => {
+          card.querySelectorAll(`input[name="faculty_${type}[]"]`)
+            .forEach(input => {
+              input.name = `faculty_${type}_by_card_${i}[]`;
+            });
+        });
+      });
+    });
+  }
+
+  update();
+})();</script>
+
+</body>
+</html>
+

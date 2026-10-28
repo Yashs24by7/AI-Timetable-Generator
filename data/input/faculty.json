@@ -1,0 +1,87 @@
+{
+    "PSG": {
+        "name": "Poonam Gham",
+        "expertise_status": "known",
+        "theory": [
+            "Cloud Computing"
+        ],
+        "tutorial": [],
+        "practical": [
+            "Cloud Computing Lab",
+            "Cellular Network Lab"
+        ]
+    },
+    "RG": {
+        "name": "Rohit Gawde",
+        "expertise_status": "known",
+        "theory": [
+            "Advanced Java Programming"
+        ],
+        "tutorial": [],
+        "practical": [
+            "Advanced Java Programming Lab",
+            "Programme Elective Lab"
+        ]
+    },
+    "RGZ": {
+        "name": "R.Z. Zope",
+        "expertise_status": "known",
+        "theory": [
+            "Cellular Network"
+        ],
+        "tutorial": [],
+        "practical": []
+    },
+    "MD": {
+        "name": "Manoj Deshmukh",
+        "expertise_status": "known",
+        "theory": [
+            "Microcontrollers & Applications"
+        ],
+        "tutorial": [],
+        "practical": [
+            "Microcontrollers & VLSI Design Lab",
+            "Technical Seminar"
+        ]
+    },
+    "GSK": {
+        "name": "Ganesh Kadam",
+        "expertise_status": "known",
+        "theory": [
+            "Sustainability Development"
+        ],
+        "tutorial": [],
+        "practical": []
+    },
+    "VDG": {
+        "name": "Vivek Ghanekar",
+        "expertise_status": "known",
+        "theory": [],
+        "tutorial": [
+            "Machine Learning"
+        ],
+        "practical": [
+            "Machine Learning Practical"
+        ]
+    },
+    "SJK": {
+        "name": "Shilpa Kale",
+        "expertise_status": "known",
+        "theory": [],
+        "tutorial": [],
+        "practical": [
+            "Machine Learning Practical"
+        ]
+    },
+    "SP": {
+        "name": "Sabhiha Parveen",
+        "expertise_status": "known",
+        "theory": [
+            "VLSI Design"
+        ],
+        "tutorial": [],
+        "practical": [
+            "Microcontrollers & VLSI Design Lab"
+        ]
+    }
+}

@@ -1,0 +1,40 @@
+{
+    "faculty_assignments": {
+        "Electronics Circuits": [
+            "SP"
+        ],
+        "Digital Electronics": [
+            "VDG"
+        ],
+        "Electronics Circuits & Digital Electronics Lab": [
+            "SP"
+        ],
+        "Open Elective I": [
+            "MD"
+        ],
+        "Data Structures & Algorithms": [
+            "RG"
+        ],
+        "Data Structures & Algorithms Lab": [
+            "RG"
+        ],
+        "Universal Human Values & Professional Ethics": [
+            "MD"
+        ],
+        "Community Engagement Project": [
+            "SJK"
+        ]
+    },
+    "faculty_assignments_verified": false,
+    "batch_mapping": {},
+    "elective_selections": {},
+    "room_assignments": {},
+    "teaching_groups": {},
+    "batches_verified": false,
+    "faculty_expertise_verified": false,
+    "rooms_verified": false,
+    "configured": false,
+    "total_students": 80,
+    "number_of_batches": 2,
+    "notes": ""
+}

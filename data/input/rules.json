@@ -1,0 +1,30 @@
+{
+    "practical_duration_hours": 2,
+    "allow_two_students_per_pc": true,
+    "combined_cloud_lecture": {
+        "enabled": true,
+        "batches": [
+            "T1",
+            "T2"
+        ],
+        "students": 63,
+        "allowed_rooms": [
+            "312",
+            "322"
+        ]
+    },
+    "practical_parallelism": {
+        "enabled": true,
+        "description": "When T1 is in a practical, T2 and T3 should preferably be scheduled in different practical activities at the same time, subject to faculty and lab availability."
+    },
+    "batch_conflict": true,
+    "faculty_conflict": true,
+    "room_conflict": true,
+    "room_capacity": true,
+    "valid_periods_only": true,
+    "break_compliance": true,
+    "lunch_compliance": true,
+    "working_days_only": true,
+    "prefer_subject_spread": true,
+    "discourage_period_6": true
+}

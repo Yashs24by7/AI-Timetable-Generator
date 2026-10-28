@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Faculty Subject Preferences</title><style>
+*{box-sizing:border-box}body{margin:0;background:#f3f6fb;color:#172033;font-family:Segoe UI,Arial,sans-serif}
+header{background:#17365d;color:white;padding:22px}main{max-width:1100px;margin:auto;padding:22px 16px}
+.panel{background:white;border:1px solid #d7e0eb;border-radius:12px;padding:18px;margin:0 0 16px}
+h1{margin:0 0 5px;font-size:25px}h2{margin:0 0 12px;font-size:18px}p.help{color:#607086;font-size:13px;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.subject,.slot{border:1px solid #d7e0eb;border-radius:8px;padding:10px}
+label{display:block;font-weight:600;margin:8px 0 5px}input,select{max-width:100%;padding:9px;border:1px solid #bcc9d8;border-radius:7px;font:inherit}
+input[type=checkbox]{width:auto}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px}
+button,.btn{display:inline-block;border:0;border-radius:8px;padding:11px 15px;background:#17365d;color:white;text-decoration:none;font-weight:700;cursor:pointer}
+.secondary{background:white;color:#17365d;border:1px solid #bcc9d8}.success{background:#dcfce7;color:#166534;padding:12px;border-radius:8px}.error{background:#fff7ed;color:#9a3412;padding:12px;border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:13px}th,td{text-align:left;padding:9px;border-bottom:1px solid #e2e8f0}th{background:#e8eef6}
+.scroll{overflow:auto}.badge{display:inline-block;padding:3px 8px;border-radius:99px;background:#fff7ed;color:#9a3412;font-size:12px}
+</style></head><body>
+<header><h1>Faculty Subject Preferences</h1><div>{{ identity.name }} · {{ identity.faculty_code }} · Signed in as {{ identity.username }}</div></header>
+<main>
+{% if error %}<div class="error">{{ error }}</div>{% endif %}{% if saved %}<div class="success">Submission saved as pending review. It did not change official assignments or readiness flags.</div>{% endif %}
+<form method="post" class="panel">
+<input type="hidden" name="_csrf" value="{{ csrf }}">
+<h2>1. Select semester and subjects</h2><label for="semester">Semester</label><select id="semester" name="semester" onchange="location.href='?semester='+this.value">{% for s in semesters %}<option value="{{ s }}" {% if s == semester %}selected{% endif %}>Semester {{ s }}</option>{% endfor %}</select>
+<p class="help">Choose subjects you believe you can teach or prefer to teach. These are declarations, not official assignments.</p>
+<div class="grid">{% for code, info in subjects.items() %}<label class="subject"><input type="checkbox" name="subject_codes" value="{{ code }}"> <b>{{ info.get('subject', code) }}</b><br><small>{{ code }} · T {{ info.get('theory_hours',0) }}h / Tu {{ info.get('tutorial_hours',0) }}h / P {{ info.get('practical_hours',0) }}h</small></label>{% else %}<p>No subjects found for this semester. Ask the administrator to configure the curriculum.</p>{% endfor %}</div>
+<h2 style="margin-top:20px">2. Propose a missing subject (optional)</h2><p class="help">A proposal is sent for review; it will not be added to the curriculum automatically.</p>
+<div class="fields"><div><label>Subject code</label><input name="proposed_subject_code" maxlength="40" placeholder="e.g. PCC-XXX"></div><div><label>Subject name</label><input name="proposed_subject_name" maxlength="160" placeholder="Full subject name"></div><div><label>Type</label><select name="proposed_subject_type"><option value="theory">Theory</option><option value="tutorial">Tutorial</option><option value="practical">Practical</option><option value="mixed">Mixed</option></select></div>
+<div><label>Theory hours/week</label><input type="number" name="proposed_theory_hours" min="0" max="20" value="0"></div><div><label>Tutorial hours/week</label><input type="number" name="proposed_tutorial_hours" min="0" max="20" value="0"></div><div><label>Practical hours/week</label><input type="number" name="proposed_practical_hours" min="0" max="20" value="0"></div></div>
+<h2 style="margin-top:20px">3. Availability and preferences</h2><p class="help">Select unavailable periods and preferred periods. A preference does not guarantee assignment; final scheduling must resolve conflicts.</p>
+<div class="scroll"><table><thead><tr><th>Day / period</th>{% for p, label in periods %}<th>{{ p }}<br>{{ label }}</th>{% endfor %}</tr></thead><tbody>
+{% for day in days %}<tr><th>{{ day }}</th>{% for p,label in periods %}<td><label><input type="checkbox" name="unavailable_slots" value="{{ day }}|{{ p }}"> Unavailable</label><label><input type="checkbox" name="preferred_slots" value="{{ day }}|{{ p }}"> Prefer</label></td>{% endfor %}</tr>{% endfor %}
+</tbody></table></div>
+<p class="help">Availability is self-reported and remains pending review. This portal currently records six teaching periods per day.</p>
+<button type="submit">Submit for administrator review</button>
+</form>
+<section class="panel"><h2>My recent submissions — Semester {{ semester }}</h2><div class="scroll"><table><thead><tr><th>Submitted</th><th>Subjects</th><th>New subject</th><th>Status</th><th>Admin note</th></tr></thead><tbody>
+{% for r in own_requests|reverse %}<tr><td>{{ r.submitted_at }}</td><td>{{ r.selected_subject_names|join(', ') or '—' }}</td><td>{{ r.proposed_subject.subject if r.proposed_subject else '—' }}</td><td><span class="badge">{{ r.status }}</span></td><td>{{ r.admin_note or '—' }}</td></tr>{% else %}<tr><td colspan="5">No submissions yet.</td></tr>{% endfor %}
+</tbody></table></div></section>
+<form method="post" action="{{ url_for('portal_logout') }}"><input type="hidden" name="_csrf" value="{{ csrf }}"><button class="secondary" type="submit">Sign out</button> <a class="btn secondary" href="{{ url_for('index') }}">Dashboard</a></form>
+</main></body></html>

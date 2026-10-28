@@ -1,0 +1,7 @@
+Room,Type,Effective_Capacity,Rule
+312,Classroom,80,Combined T1+T2 Cloud lecture possible
+319,Classroom,50,Not enough for combined 63-student Cloud group
+322,Classroom,80,Combined T1+T2 Cloud lecture possible
+A317,Lab,48,24 PCs; 2 students/PC maximum if needed
+A318,Lab,48,24 PCs; 2 students/PC maximum if needed
+A320,Lab,48,24 PCs; 2 students/PC maximum if needed

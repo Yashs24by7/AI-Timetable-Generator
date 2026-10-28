@@ -1,0 +1,18 @@
+{
+    "configured": false,
+    "total_students": 80,
+    "number_of_batches": 2,
+    "batches": [
+        {
+            "code": "S1",
+            "students": 40,
+            "elective": ""
+        },
+        {
+            "code": "S2",
+            "students": 40,
+            "elective": ""
+        }
+    ],
+    "notes": "Batch information is pending confirmation."
+}

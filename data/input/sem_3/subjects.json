@@ -1,0 +1,83 @@
+{
+    "PCC-201-ETC": {
+        "subject": "Electronics Circuits",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "included": true
+    },
+    "PCC-202-ETC": {
+        "subject": "Engineering Mathematics-III",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "included": true
+    },
+    "PCC-203-ETC": {
+        "subject": "Digital Electronics",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "included": true
+    },
+    "PCC-204-ETC": {
+        "subject": "Electronics Circuits & Digital Electronics Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2,
+        "included": true
+    },
+    "OE1-ETC": {
+        "subject": "Open Elective I",
+        "type": "OE",
+        "theory_hours": 2,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "included": true
+    },
+    "MDM-230-ETC": {
+        "subject": "Data Structures & Algorithms",
+        "type": "MDM",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "included": true
+    },
+    "MDM-231-ETC": {
+        "subject": "Data Structures & Algorithms Lab",
+        "type": "MDM",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2,
+        "included": true
+    },
+    "EEM-240-ETC": {
+        "subject": "Engineering Economics & Applications",
+        "type": "EEM",
+        "theory_hours": 0,
+        "tutorial_hours": 1,
+        "practical_hours": 2,
+        "included": true
+    },
+    "VEC-250-ETC": {
+        "subject": "Universal Human Values & Professional Ethics",
+        "type": "VEC",
+        "theory_hours": 2,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "included": true
+    },
+    "CEP-260-ETC": {
+        "subject": "Community Engagement Project",
+        "type": "CEP",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 4,
+        "note": "Curriculum shows 4 practical hours; 2 hours/week are teaching load and remaining 2 hours are society engagement.",
+        "included": true
+    }
+}

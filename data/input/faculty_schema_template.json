@@ -1,0 +1,13 @@
+﻿{
+    "_schema": {
+        "description": "Semester-specific faculty configuration",
+        "faculty_fields": {
+            "code": "Short faculty code",
+            "name": "Faculty name",
+            "theory": "Subjects/slots the faculty can teach in theory",
+            "tutorial": "Subjects/slots the faculty can teach in tutorials",
+            "practical": "Subjects/slots the faculty can teach in practicals"
+        }
+    },
+    "faculty": {}
+}

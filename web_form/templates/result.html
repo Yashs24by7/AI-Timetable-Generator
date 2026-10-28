@@ -1,0 +1,7 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Semester {{ semester }} — Solver Result</title>
+<style>body{font-family:Segoe UI,Arial,sans-serif;background:#f3f6fb;color:#172033;margin:0}.wrap{max-width:1100px;margin:32px auto;padding:0 18px}.card{background:white;border:1px solid #dbe3ef;border-radius:12px;padding:20px;margin-bottom:16px}.btn{display:inline-block;padding:10px 14px;border-radius:8px;background:#1d4ed8;color:#fff;text-decoration:none;font-weight:600}.status{font-weight:700;color:{% if return_code == 0 %}#166534{% else %}#9a3412{% endif %}}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#0f172a;color:#e2e8f0;padding:18px;border-radius:9px;max-height:70vh;overflow:auto;font-size:12px;line-height:1.5}h1{font-size:26px}</style></head>
+<body><main class="wrap"><div class="card"><a class="btn" href="/">← Dashboard</a><h1>Semester {{ semester }} — Solver Output</h1><p class="status">{% if return_code == 0 %}Process completed successfully.{% else %}Generation did not complete successfully (exit code {{ return_code }}).{% endif %}</p><p>Read the output below. If resources are missing, configure them before retrying.</p></div>
+<div class="card"><h2>Output</h2><pre>{{ output }}</pre></div>
+{% if error_output %}<div class="card"><h2>Errors / Readiness Details</h2><pre>{{ error_output }}</pre></div>{% endif %}
+</main></body></html>

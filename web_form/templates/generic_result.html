@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semester {{ semester }} Timetable</title>
+<style>
+body{font-family:Segoe UI,Arial,sans-serif;background:#f3f6fb;color:#172033;margin:0;padding:24px}
+main{max-width:1100px;margin:auto}
+.card{background:white;border:1px solid #dbe3ef;border-radius:12px;padding:20px;margin-bottom:16px}
+table{width:100%;border-collapse:collapse;background:white}
+th,td{border:1px solid #dbe3ef;padding:10px;text-align:left;vertical-align:top}
+th{background:#eaf0fa}
+tr:nth-child(even){background:#f8fafc}
+a{color:#1d4ed8}
+.badge{font-weight:bold;color:#166534}
+</style>
+</head>
+<body>
+<main>
+<div class="card">
+<h1>Semester {{ semester }} Timetable</h1>
+<p>Solver status: <span class="badge">{{ status }}</span></p>
+<p>Scheduled sessions: {{ records|length }}</p>
+<a href="/">Back to dashboard</a>
+</div>
+<div class="card">
+<table>
+<thead><tr><th>Day</th><th>Period</th><th>Subject</th><th>Type</th><th>Batch</th><th>Faculty</th><th>Room</th></tr></thead>
+<tbody>
+{% for r in records %}
+<tr>
+<td>{{ r.get('day', '') }}</td>
+<td>{{ r.get('period', '') }}</td>
+<td>{{ r.get('subject', '') }}</td>
+<td>{{ r.get('type', '') }}</td>
+<td>{{ r.get('batch', '') }}</td>
+<td>{{ r.get('faculty', '') }}</td>
+<td>{{ r.get('room', '') }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div>
+</main>
+</body>
+</html>

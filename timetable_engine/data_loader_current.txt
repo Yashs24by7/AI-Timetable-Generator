@@ -1,0 +1,1881 @@
+from pathlib import Path
+import json
+import pandas as pd
+
+
+# ============================================================
+# PROJECT PATHS
+# ============================================================
+
+PROJECT_ROOT = Path(__file__).resolve().parent.parent
+
+SUBMISSIONS_DIR = (
+    PROJECT_ROOT
+    / "web_form"
+    / "submissions"
+)
+
+WORKLOAD_FILE = (
+    PROJECT_ROOT
+    / "data"
+    / "TE_SemV_Reconstructed_Workload.xlsx"
+)
+
+
+# ============================================================
+# SCHEDULING CONFIGURATION
+# ============================================================
+
+SCHEDULING_RULES = {
+
+    "working_days": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+    ],
+
+    "periods_per_day": 6,
+
+    "periods": {
+
+        1: {
+            "start": "08:45",
+            "end": "09:45",
+        },
+
+        2: {
+            "start": "09:45",
+            "end": "10:45",
+        },
+
+        3: {
+            "start": "11:00",
+            "end": "12:00",
+        },
+
+        4: {
+            "start": "12:00",
+            "end": "13:00",
+        },
+
+        5: {
+            "start": "13:45",
+            "end": "14:45",
+        },
+
+        6: {
+            "start": "14:45",
+            "end": "15:45",
+        },
+    },
+
+    "short_break": {
+        "start": "10:45",
+        "end": "11:00",
+    },
+
+    "lunch_break": {
+        "start": "13:00",
+        "end": "13:45",
+    },
+
+    "theory_duration": 1,
+
+    "tutorial_duration": 1,
+
+    "practical_duration": 2,
+}
+
+
+# ============================================================
+# FIND LATEST SUBMISSION
+# ============================================================
+
+def find_latest_submission():
+
+    if not SUBMISSIONS_DIR.exists():
+
+        raise FileNotFoundError(
+            f"Submission directory not found:\n"
+            f"{SUBMISSIONS_DIR}"
+        )
+
+    submissions = [
+
+        folder
+
+        for folder in SUBMISSIONS_DIR.iterdir()
+
+        if (
+            folder.is_dir()
+            and
+            (folder / "submission.json").exists()
+        )
+    ]
+
+    if not submissions:
+
+        raise FileNotFoundError(
+            "No submitted timetable form was found."
+        )
+
+    return max(
+        submissions,
+        key=lambda folder: (
+            folder / "submission.json"
+        ).stat().st_mtime
+    )
+
+
+# ============================================================
+# LOAD SUBMISSION
+# ============================================================
+
+def load_submission():
+
+    submission_folder = find_latest_submission()
+
+    submission_file = (
+        submission_folder
+        / "submission.json"
+    )
+
+    with open(
+        submission_file,
+        "r",
+        encoding="utf-8"
+    ) as file:
+
+        return json.load(file)
+
+
+# ============================================================
+# FACULTY DATA
+# ============================================================
+
+def load_faculty_data():
+
+    submission = load_submission()
+
+    faculty_data = {}
+
+    for faculty in submission.get(
+        "faculty",
+        []
+    ):
+
+        code = str(
+            faculty.get(
+                "code",
+                ""
+            )
+        ).strip()
+
+        name = str(
+            faculty.get(
+                "name",
+                ""
+            )
+        ).strip()
+
+        if not code:
+            continue
+
+        faculty_data[code] = {
+
+            "name":
+                name or code,
+
+            "theory":
+                faculty.get(
+                    "theory",
+                    []
+                ) or [],
+
+            "tutorial":
+                faculty.get(
+                    "tutorial",
+                    []
+                ) or [],
+
+            "practical":
+                faculty.get(
+                    "practical",
+                    []
+                ) or [],
+        }
+
+    return faculty_data
+
+
+# ============================================================
+# FACULTY HELPERS
+# ============================================================
+
+def get_faculty_for_theory(subject):
+
+    result = []
+
+    for code, data in load_faculty_data().items():
+
+        if subject in data["theory"]:
+
+            result.append(code)
+
+    return result
+
+
+def get_faculty_for_tutorial(subject):
+
+    result = []
+
+    for code, data in load_faculty_data().items():
+
+        if subject in data["tutorial"]:
+
+            result.append(code)
+
+    return result
+
+
+def get_faculty_for_practical(subject):
+
+    result = []
+
+    for code, data in load_faculty_data().items():
+
+        if subject in data["practical"]:
+
+            result.append(code)
+
+    return result
+
+
+def get_faculty_for_subject(subject):
+
+    result = set()
+
+    result.update(
+        get_faculty_for_theory(subject)
+    )
+
+    result.update(
+        get_faculty_for_tutorial(subject)
+    )
+
+    result.update(
+        get_faculty_for_practical(subject)
+    )
+
+    return sorted(result)
+
+
+def get_subjects_for_faculty(faculty_code):
+
+    faculty = load_faculty_data()
+
+    if faculty_code not in faculty:
+
+        return []
+
+    data = faculty[faculty_code]
+
+    return sorted(
+        set(
+            data["theory"]
+            +
+            data["tutorial"]
+            +
+            data["practical"]
+        )
+    )
+
+
+# ============================================================
+# BATCH DATA
+# ============================================================
+
+def load_batch_data():
+
+    submission = load_submission()
+
+    batches = {}
+
+    for batch in submission.get(
+        "batches",
+        []
+    ):
+
+        code = str(
+            batch.get(
+                "code",
+                ""
+            )
+        ).strip()
+
+        if not code:
+            continue
+
+        try:
+
+            students = int(
+                batch.get(
+                    "students",
+                    0
+                )
+            )
+
+        except (
+            ValueError,
+            TypeError
+        ):
+
+            students = 0
+
+        batches[code] = {
+
+            "students":
+                students,
+
+            "elective":
+                str(
+                    batch.get(
+                        "elective",
+                        ""
+                    )
+                ).strip(),
+        }
+
+    return batches
+
+
+# ============================================================
+# ACADEMIC DATA
+# ============================================================
+
+def load_academic_data():
+
+    submission = load_submission()
+
+    return submission.get(
+        "academic",
+        {}
+    )
+
+
+# ============================================================
+# ROOM DATA
+# ============================================================
+
+def load_room_data():
+
+    submission = load_submission()
+
+    return submission.get(
+        "rooms",
+        []
+    )
+
+
+# ============================================================
+# WORKLOAD DATA
+#
+# Excel is the source of workload information.
+# ============================================================
+
+def load_workload():
+
+    if not WORKLOAD_FILE.exists():
+
+        raise FileNotFoundError(
+            f"Workload file not found:\n"
+            f"{WORKLOAD_FILE}"
+        )
+
+    df = pd.read_excel(
+        WORKLOAD_FILE
+    )
+
+    if df.empty:
+
+        raise ValueError(
+            "Workload Excel file is empty."
+        )
+
+    # --------------------------------------------------------
+    # Normalize column names
+    # --------------------------------------------------------
+
+    df.columns = [
+        str(column).strip()
+        for column in df.columns
+    ]
+
+    required_columns = [
+
+        "Course Code",
+
+        "Subject",
+
+        "Theory (hrs)",
+
+        "Tutorial (hrs)",
+
+        "Practical (hrs)",
+
+        "Credits",
+
+        "Session Packaging",
+    ]
+
+    missing_columns = [
+
+        column
+
+        for column in required_columns
+
+        if column not in df.columns
+    ]
+
+    if missing_columns:
+
+        raise ValueError(
+            "Workload file is missing required "
+            "columns:\n"
+            +
+            "\n".join(
+                f"- {column}"
+                for column in missing_columns
+            )
+        )
+
+    # --------------------------------------------------------
+    # Remove TOTAL row
+    # --------------------------------------------------------
+
+    df = df[
+        df["Course Code"].notna()
+    ].copy()
+
+    df = df[
+        df["Course Code"].astype(str).str.upper()
+        != "TOTAL"
+    ].copy()
+
+    # --------------------------------------------------------
+    # Normalize text columns
+    # --------------------------------------------------------
+
+    df["Course Code"] = (
+        df["Course Code"]
+        .astype(str)
+        .str.strip()
+    )
+
+    df["Subject"] = (
+        df["Subject"]
+        .astype(str)
+        .str.strip()
+    )
+
+    df["Session Packaging"] = (
+        df["Session Packaging"]
+        .fillna("")
+        .astype(str)
+        .str.strip()
+    )
+
+    # --------------------------------------------------------
+    # Normalize numeric columns
+    # --------------------------------------------------------
+
+    numeric_columns = [
+
+        "Theory (hrs)",
+
+        "Tutorial (hrs)",
+
+        "Practical (hrs)",
+
+        "Credits",
+    ]
+
+    for column in numeric_columns:
+
+        df[column] = pd.to_numeric(
+            df[column],
+            errors="coerce"
+        ).fillna(0)
+
+    # --------------------------------------------------------
+    # Build clean workload records
+    # --------------------------------------------------------
+
+    workload_records = []
+
+    for _, row in df.iterrows():
+
+        workload_records.append({
+
+            "course_code":
+                row["Course Code"],
+
+            "subject":
+                row["Subject"],
+
+            "theory_hours":
+                int(row["Theory (hrs)"]),
+
+            "tutorial_hours":
+                int(row["Tutorial (hrs)"]),
+
+            "practical_hours":
+                int(row["Practical (hrs)"]),
+
+            "credits":
+                float(row["Credits"]),
+
+            "session_packaging":
+                row["Session Packaging"],
+        })
+
+    # --------------------------------------------------------
+    # Validate workload
+    # --------------------------------------------------------
+
+    for record in workload_records:
+
+        total_hours = (
+
+            record["theory_hours"]
+
+            +
+
+            record["tutorial_hours"]
+
+            +
+
+            record["practical_hours"]
+        )
+
+        if total_hours <= 0:
+
+            raise ValueError(
+                f"Subject has zero workload: "
+                f"{record['subject']}"
+            )
+
+    return {
+
+        "dataframe":
+            df,
+
+        "records":
+            workload_records,
+
+        "total_theory_hours":
+            sum(
+                record["theory_hours"]
+                for record in workload_records
+            ),
+
+        "total_tutorial_hours":
+            sum(
+                record["tutorial_hours"]
+                for record in workload_records
+            ),
+
+        "total_practical_hours":
+            sum(
+                record["practical_hours"]
+                for record in workload_records
+            ),
+
+        "total_weekly_hours":
+            sum(
+                record["theory_hours"]
+                +
+                record["tutorial_hours"]
+                +
+                record["practical_hours"]
+
+                for record in workload_records
+            ),
+    }
+
+
+# ============================================================
+# SUBJECT DEFINITIONS
+#
+# IMPORTANT:
+# Workload values now come from Excel.
+#
+# These definitions currently contain only scheduling
+# structure that is NOT present in the workload Excel:
+#
+# - batch groups
+# - elective groups
+# - practical groups
+#
+# We will make these dynamic in the next phase.
+# ============================================================
+
+SUBJECT_DEFINITIONS = {
+
+    "Microcontrollers & Applications": {
+
+        "code": "PCC-301-ETC",
+
+        "theory_group": "COMMON_TE",
+
+        "batch_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+    },
+
+    "Cellular Network": {
+
+        "code": "PCC-302-ETC",
+
+        "theory_group": "COMMON_TE",
+
+        "batch_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+    },
+
+    "VLSI Design": {
+
+        "code": "PCC-303-ETC",
+
+        "theory_group": "COMMON_TE",
+
+        "batch_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+    },
+
+    "Microcontrollers & VLSI Design Lab": {
+
+        "code": "PCC-304-ETC",
+
+        "practical_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+
+        "practical_blocks": 2,
+    },
+
+    "Cellular Network Lab": {
+
+        "code": "PCC-305-ETC",
+
+        "practical_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+
+        "practical_blocks": 1,
+    },
+
+    "Programme Elective I": {
+
+        "code": "PEC-321-ETC",
+
+        "elective_groups": {
+
+            "Cloud Computing": [
+                "T1",
+                "T2",
+            ],
+
+            "Advanced Java Programming": [
+                "T3",
+            ],
+        },
+    },
+
+    "Programme Elective Lab": {
+
+        "code": "PEC-322-ETC",
+
+        "elective_groups": {
+
+            "Cloud Computing": [
+                "T1",
+                "T2",
+            ],
+
+            "Advanced Java Programming": [
+                "T3",
+            ],
+        },
+
+        "practical_blocks": 1,
+    },
+
+    "Machine Learning": {
+
+        "code": "MDM-331-ETC",
+
+        "tutorial_group":
+            "COMMON_TE",
+
+        "practical_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+
+        "practical_blocks": 1,
+    },
+
+    "Open Elective": {
+
+        "code": "OLE-341-ETC",
+
+        "theory_group":
+            "COMMON_TE",
+
+        "batch_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+
+        "elective_name":
+            "Sustainability Development",
+    },
+
+    "Technical Seminar": {
+
+        "code": "ELC-342-ETC",
+
+        "practical_groups": [
+            "T1",
+            "T2",
+            "T3",
+        ],
+
+        "practical_blocks": 1,
+    },
+}
+
+
+# ============================================================
+# TEACHING GROUPS
+# ============================================================
+
+TEACHING_GROUPS = {
+
+    "COMMON_TE":
+        [
+            "T1",
+            "T2",
+            "T3",
+        ],
+
+    "CLOUD":
+        [
+            "T1",
+            "T2",
+        ],
+
+    "AJP":
+        [
+            "T3",
+        ],
+
+    "T1":
+        [
+            "T1",
+        ],
+
+    "T2":
+        [
+            "T2",
+        ],
+
+    "T3":
+        [
+            "T3",
+        ],
+}
+
+
+# ============================================================
+# SUBJECT BATCH STRUCTURE
+# ============================================================
+
+def build_subject_batches():
+
+    subject_batches = {}
+
+    for subject, definition in SUBJECT_DEFINITIONS.items():
+
+        batches = []
+
+        if "batch_groups" in definition:
+
+            batches.extend(
+                definition[
+                    "batch_groups"
+                ]
+            )
+
+        if "practical_groups" in definition:
+
+            batches.extend(
+                definition[
+                    "practical_groups"
+                ]
+            )
+
+        if "theory_group" in definition:
+
+            batches.extend(
+                TEACHING_GROUPS[
+                    definition[
+                        "theory_group"
+                    ]
+                ]
+            )
+
+        if "tutorial_group" in definition:
+
+            batches.extend(
+                TEACHING_GROUPS[
+                    definition[
+                        "tutorial_group"
+                    ]
+                ]
+            )
+
+        if "elective_groups" in definition:
+
+            for group_batches in definition[
+                "elective_groups"
+            ].values():
+
+                batches.extend(
+                    group_batches
+                )
+
+        subject_batches[subject] = sorted(
+            set(batches)
+        )
+
+    return subject_batches
+
+
+SUBJECT_BATCHES = (
+    build_subject_batches()
+)
+
+
+# ============================================================
+# ELECTIVE GROUPS
+# ============================================================
+
+ELECTIVE_GROUPS = {
+
+    "Programme Elective I": {
+
+        "CLOUD":
+            [
+                "T1",
+                "T2",
+            ],
+
+        "AJP":
+            [
+                "T3",
+            ],
+    },
+
+    "Programme Elective Lab": {
+
+        "T1":
+            [
+                "T1",
+            ],
+
+        "T2":
+            [
+                "T2",
+            ],
+
+        "T3":
+            [
+                "T3",
+            ],
+    },
+}
+
+
+# ============================================================
+# WORKLOAD LOOKUP
+# ============================================================
+
+def get_workload_record(
+    subject,
+    workload,
+):
+
+    for record in workload["records"]:
+
+        if record["subject"] == subject:
+
+            return record
+
+    return None
+
+
+# ============================================================
+# SESSION CREATION HELPER
+# ============================================================
+
+def make_session(
+    session_id,
+    subject,
+    session_type,
+    duration,
+    group,
+    batches,
+    elective=None,
+):
+
+    session = {
+
+        "id":
+            session_id,
+
+        "subject":
+            subject,
+
+        "type":
+            session_type,
+
+        "duration":
+            duration,
+
+        "group":
+            group,
+
+        "batch":
+            batches,
+    }
+
+    if elective:
+
+        session["elective"] = elective
+
+    return session
+
+
+# ============================================================
+# COMMON THEORY SESSION CREATOR
+# ============================================================
+
+def create_common_theory_sessions(
+    subject,
+    hours,
+    group="COMMON_TE",
+):
+
+    sessions = []
+
+    batches = (
+        TEACHING_GROUPS[group]
+    )
+
+    for index in range(
+        1,
+        hours + 1
+    ):
+
+        sessions.append(
+            make_session(
+
+                session_id=(
+                    f"{subject}_T{index}"
+                ),
+
+                subject=subject,
+
+                session_type="theory",
+
+                duration=
+                    SCHEDULING_RULES[
+                        "theory_duration"
+                    ],
+
+                group=group,
+
+                batches=batches.copy(),
+            )
+        )
+
+    return sessions
+
+
+# ============================================================
+# TUTORIAL SESSION CREATOR
+# ============================================================
+
+def create_common_tutorial_sessions(
+    subject,
+    hours,
+    group="COMMON_TE",
+):
+
+    sessions = []
+
+    batches = (
+        TEACHING_GROUPS[group]
+    )
+
+    for index in range(
+        1,
+        hours + 1
+    ):
+
+        sessions.append(
+            make_session(
+
+                session_id=(
+                    f"{subject}_TUT_{index}"
+                ),
+
+                subject=subject,
+
+                session_type="tutorial",
+
+                duration=
+                    SCHEDULING_RULES[
+                        "tutorial_duration"
+                    ],
+
+                group=group,
+
+                batches=batches.copy(),
+            )
+        )
+
+    return sessions
+
+
+# ============================================================
+# ELECTIVE THEORY SESSION CREATOR
+# ============================================================
+
+def create_elective_theory_sessions(
+    subject,
+    hours,
+    elective_groups,
+):
+
+    sessions = []
+
+    for elective, batches in (
+        elective_groups.items()
+    ):
+
+        if batches == [
+            "T1",
+            "T2",
+        ]:
+
+            group_name = "CLOUD"
+
+        else:
+
+            group_name = "AJP"
+
+        for index in range(
+            1,
+            hours + 1
+        ):
+
+            sessions.append(
+                make_session(
+
+                    session_id=(
+                        f"{subject}_"
+                        f"{elective.replace(' ', '_')}_"
+                        f"{index}"
+                    ),
+
+                    subject=subject,
+
+                    session_type="theory",
+
+                    duration=
+                        SCHEDULING_RULES[
+                            "theory_duration"
+                        ],
+
+                    group=group_name,
+
+                    batches=batches.copy(),
+
+                    elective=elective,
+                )
+            )
+
+    return sessions
+
+
+# ============================================================
+# PRACTICAL SESSION CREATOR
+# ============================================================
+
+def create_practical_sessions(
+    subject,
+    blocks,
+    groups,
+):
+
+    sessions = []
+
+    for block in range(
+        1,
+        blocks + 1
+    ):
+
+        for batch in groups:
+
+            elective = None
+
+            if subject == (
+                "Programme Elective Lab"
+            ):
+
+                if batch in [
+                    "T1",
+                    "T2",
+                ]:
+
+                    elective = (
+                        "Cloud Computing"
+                    )
+
+                elif batch == "T3":
+
+                    elective = (
+                        "Advanced Java Programming"
+                    )
+
+            sessions.append(
+                make_session(
+
+                    session_id=(
+                        f"{subject}_"
+                        f"{block}_"
+                        f"{batch}"
+                    ),
+
+                    subject=subject,
+
+                    session_type="practical",
+
+                    duration=
+                        SCHEDULING_RULES[
+                            "practical_duration"
+                        ],
+
+                    group=batch,
+
+                    batches=[
+                        batch
+                    ],
+
+                    elective=elective,
+                )
+            )
+
+    return sessions
+
+
+# ============================================================
+# MASTER SESSION GENERATOR
+# ============================================================
+
+def create_sessions(
+    workload,
+):
+
+    sessions = []
+
+    # --------------------------------------------------------
+    # Process subjects using workload Excel.
+    # --------------------------------------------------------
+
+    for subject, definition in (
+        SUBJECT_DEFINITIONS.items()
+    ):
+
+        workload_record = (
+            get_workload_record(
+                subject,
+                workload
+            )
+        )
+
+        if workload_record is None:
+
+            raise ValueError(
+                f"Subject '{subject}' "
+                f"was not found in workload Excel."
+            )
+
+        theory_hours = (
+            workload_record[
+                "theory_hours"
+            ]
+        )
+
+        tutorial_hours = (
+            workload_record[
+                "tutorial_hours"
+            ]
+        )
+
+        practical_hours = (
+            workload_record[
+                "practical_hours"
+            ]
+        )
+
+        # ----------------------------------------------------
+        # COMMON THEORY
+        # ----------------------------------------------------
+
+        if theory_hours > 0:
+
+            if (
+                "theory_group"
+                in definition
+            ):
+
+                sessions.extend(
+                    create_common_theory_sessions(
+                        subject,
+                        theory_hours,
+                        definition[
+                            "theory_group"
+                        ],
+                    )
+                )
+
+        # ----------------------------------------------------
+        # ELECTIVE THEORY
+        # ----------------------------------------------------
+
+        if theory_hours > 0:
+
+            if (
+                "elective_groups"
+                in definition
+            ):
+
+                sessions.extend(
+                    create_elective_theory_sessions(
+                        subject,
+                        theory_hours,
+                        definition[
+                            "elective_groups"
+                        ],
+                    )
+                )
+
+        # ----------------------------------------------------
+        # COMMON TUTORIAL
+        # ----------------------------------------------------
+
+        if tutorial_hours > 0:
+
+            if (
+                "tutorial_group"
+                in definition
+            ):
+
+                sessions.extend(
+                    create_common_tutorial_sessions(
+                        subject,
+                        tutorial_hours,
+                        definition[
+                            "tutorial_group"
+                        ],
+                    )
+                )
+
+        # ----------------------------------------------------
+        # PRACTICAL
+        # ----------------------------------------------------
+
+        if practical_hours > 0:
+
+            # Programme Elective Lab uses elective groups
+            # rather than the generic practical_groups key.
+            # Each batch gets one 2-hour lab session.
+            if (
+                subject == "Programme Elective Lab"
+                and "elective_groups" in definition
+            ):
+
+                for elective, groups in definition[
+                    "elective_groups"
+                ].items():
+
+                    for batch in groups:
+
+                        sessions.append(
+                            make_session(
+                                session_id=(
+                                    f"{subject}_"
+                                    f"1_{batch}"
+                                ),
+                                subject=subject,
+                                session_type="practical",
+                                duration=SCHEDULING_RULES[
+                                    "practical_duration"
+                                ],
+                                group=batch,
+                                batches=[batch],
+                                elective=elective,
+                            )
+                        )
+
+            elif "practical_groups" in definition:
+
+                practical_blocks = int(
+                    definition.get(
+                        "practical_blocks",
+                        practical_hours // 2
+                    )
+                )
+
+                sessions.extend(
+                    create_practical_sessions(
+                        subject,
+                        practical_blocks,
+                        definition[
+                            "practical_groups"
+                        ],
+                    )
+                )
+
+    return sessions
+
+
+# ============================================================
+# VALIDATE GENERATED SESSIONS
+# ============================================================
+
+def validate_sessions(
+    sessions,
+    batches,
+    workload,
+):
+
+    errors = []
+
+    # --------------------------------------------------------
+    # SESSION COUNT
+    # --------------------------------------------------------
+
+    if len(sessions) != 37:
+
+        errors.append(
+            f"Expected 37 sessions, "
+            f"but generated {len(sessions)}."
+        )
+
+    # --------------------------------------------------------
+    # WORKLOAD TOTAL
+    # --------------------------------------------------------
+
+    if workload[
+        "total_weekly_hours"
+    ] != 28:
+
+        errors.append(
+            "Expected 28 weekly workload hours, "
+            f"but found "
+            f"{workload['total_weekly_hours']}."
+        )
+
+    # --------------------------------------------------------
+    # REQUIRED BATCHES
+    # --------------------------------------------------------
+
+    required_batches = {
+        "T1",
+        "T2",
+        "T3",
+    }
+
+    available_batches = set(
+        batches.keys()
+    )
+
+    missing_batches = (
+        required_batches
+        -
+        available_batches
+    )
+
+    if missing_batches:
+
+        errors.append(
+            "Missing required batches: "
+            +
+            ", ".join(
+                sorted(
+                    missing_batches
+                )
+            )
+        )
+
+    # --------------------------------------------------------
+    # SESSION STRUCTURE
+    # --------------------------------------------------------
+
+    for session in sessions:
+
+        required_keys = [
+
+            "id",
+
+            "subject",
+
+            "type",
+
+            "duration",
+
+            "group",
+
+            "batch",
+        ]
+
+        for key in required_keys:
+
+            if key not in session:
+
+                errors.append(
+                    f"Session "
+                    f"{session.get('id', 'UNKNOWN')} "
+                    f"is missing '{key}'."
+                )
+
+        if session.get(
+            "duration"
+        ) not in [
+            1,
+            2,
+        ]:
+
+            errors.append(
+                f"Invalid duration in "
+                f"{session.get('id', 'UNKNOWN')}: "
+                f"{session.get('duration')}"
+            )
+
+        if session.get(
+            "type"
+        ) == "practical":
+
+            if session.get(
+                "duration"
+            ) != 2:
+
+                errors.append(
+                    f"Practical session "
+                    f"{session.get('id')} "
+                    f"must be 2 hours."
+                )
+
+        for batch in session.get(
+            "batch",
+            []
+        ):
+
+            if batch not in batches:
+
+                errors.append(
+                    f"Session "
+                    f"{session.get('id')} "
+                    f"references unknown "
+                    f"batch {batch}."
+                )
+
+    return errors
+
+
+# ============================================================
+# MAIN DATA LOADER
+# ============================================================
+
+def load_te_sem_v_data():
+
+    submission = (
+        load_submission()
+    )
+
+    faculty = (
+        load_faculty_data()
+    )
+
+    batches = (
+        load_batch_data()
+    )
+
+    academic = (
+        load_academic_data()
+    )
+
+    rooms = (
+        load_room_data()
+    )
+
+    workload = (
+        load_workload()
+    )
+
+    sessions = create_sessions(
+        workload
+    )
+
+    validation_errors = (
+        validate_sessions(
+            sessions,
+            batches,
+            workload,
+        )
+    )
+
+    if validation_errors:
+
+        raise ValueError(
+            "DATA LOADER VALIDATION FAILED:\n"
+            +
+            "\n".join(
+                f"- {error}"
+                for error in validation_errors
+            )
+        )
+
+    return {
+
+        "submission":
+            submission,
+
+        "faculty":
+            faculty,
+
+        "batches":
+            batches,
+
+        "academic":
+            academic,
+
+        "rooms":
+            rooms,
+
+        "workload":
+            workload,
+
+        "sessions":
+            sessions,
+
+        "subject_definitions":
+            SUBJECT_DEFINITIONS,
+
+        "subject_batches":
+            SUBJECT_BATCHES,
+
+        "teaching_groups":
+            TEACHING_GROUPS,
+
+        "elective_groups":
+            ELECTIVE_GROUPS,
+
+        "scheduling_rules":
+            SCHEDULING_RULES,
+    }
+
+
+# ============================================================
+# BACKWARD COMPATIBILITY
+# ============================================================
+
+def load_data():
+
+    return load_te_sem_v_data()
+
+
+# ============================================================
+# DEBUG / TEST
+# ============================================================
+
+if __name__ == "__main__":
+
+    print("=" * 70)
+
+    print(
+        "AI TIMETABLE DATA LOADER"
+    )
+
+    print("=" * 70)
+
+    data = (
+        load_te_sem_v_data()
+    )
+
+    print(
+        "\nLatest submission loaded successfully."
+    )
+
+    # --------------------------------------------------------
+    # WORKLOAD
+    # --------------------------------------------------------
+
+    workload = data[
+        "workload"
+    ]
+
+    print(
+        "\nWorkload loaded from Excel:"
+    )
+
+    for record in workload[
+        "records"
+    ]:
+
+        print(
+
+            f"{record['course_code']} | "
+
+            f"{record['subject']} | "
+
+            f"T={record['theory_hours']} | "
+
+            f"TU={record['tutorial_hours']} | "
+
+            f"P={record['practical_hours']} | "
+
+            f"Credits={record['credits']}"
+
+        )
+
+    print(
+        "\nWorkload totals:"
+    )
+
+    print(
+        "Theory    :",
+        workload[
+            "total_theory_hours"
+        ]
+    )
+
+    print(
+        "Tutorial  :",
+        workload[
+            "total_tutorial_hours"
+        ]
+    )
+
+    print(
+        "Practical :",
+        workload[
+            "total_practical_hours"
+        ]
+    )
+
+    print(
+        "Total     :",
+        workload[
+            "total_weekly_hours"
+        ]
+    )
+
+    # --------------------------------------------------------
+    # FACULTY
+    # --------------------------------------------------------
+
+    print(
+        "\nFaculty:"
+    )
+
+    for code, info in data[
+        "faculty"
+    ].items():
+
+        print(
+            f"\n{code} - "
+            f"{info['name']}"
+        )
+
+        print(
+            "  Theory    :",
+            info["theory"]
+        )
+
+        print(
+            "  Tutorial  :",
+            info["tutorial"]
+        )
+
+        print(
+            "  Practical :",
+            info["practical"]
+        )
+
+    # --------------------------------------------------------
+    # BATCHES
+    # --------------------------------------------------------
+
+    print(
+        "\nBatches:"
+    )
+
+    for code, info in data[
+        "batches"
+    ].items():
+
+        print(
+            f"{code}: "
+            f"{info['students']} students | "
+            f"{info['elective']}"
+        )
+
+    # --------------------------------------------------------
+    # ROOMS
+    # --------------------------------------------------------
+
+    print(
+        "\nRooms:"
+    )
+
+    for room in data[
+        "rooms"
+    ]:
+
+        print(
+            room
+        )
+
+    # --------------------------------------------------------
+    # SESSION COUNT
+    # --------------------------------------------------------
+
+    print(
+        "\nSessions:",
+        len(
+            data["sessions"]
+        )
+    )
+
+    # --------------------------------------------------------
+    # SESSION DETAILS
+    # --------------------------------------------------------
+
+    print(
+        "\nSession details:"
+    )
+
+    for session in data[
+        "sessions"
+    ]:
+
+        print(
+
+            f"{session['id']} | "
+
+            f"{session['subject']} | "
+
+            f"{session['type']} | "
+
+            f"{session['duration']}h | "
+
+            f"{session['batch']}"
+
+        )
+
+    # --------------------------------------------------------
+    # PRACTICAL SIZE CHECK
+    # --------------------------------------------------------
+
+    print(
+        "\nPractical group sizes:"
+    )
+
+    for session in data[
+        "sessions"
+    ]:
+
+        if (
+            session["type"]
+            !=
+            "practical"
+        ):
+
+            continue
+
+        size = sum(
+
+            data[
+                "batches"
+            ][batch][
+                "students"
+            ]
+
+            for batch
+            in session["batch"]
+        )
+
+        print(
+
+            f"{session['id']}: "
+            f"{size} students"
+
+        )
+
+    # --------------------------------------------------------
+    # FINAL STATUS
+    # --------------------------------------------------------
+
+    print(
+        "\n" + "=" * 70
+    )
+
+    print(
+        "DATA LOADER VALIDATION PASSED"
+    )
+
+    print(
+        f"Total sessions: "
+        f"{len(data['sessions'])}"
+    )
+
+    print(
+        f"Total workload: "
+        f"{data['workload']['total_weekly_hours']} hours/week"
+    )
+
+    print(
+        "=" * 70
+    )

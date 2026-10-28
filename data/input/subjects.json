@@ -1,0 +1,77 @@
+{
+    "PCC-301-ETC": {
+        "subject": "Microcontrollers & Applications",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-302-ETC": {
+        "subject": "Cellular Network",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-303-ETC": {
+        "subject": "VLSI Design",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-304-ETC": {
+        "subject": "Microcontrollers & VLSI Design Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 4
+    },
+    "PCC-305-ETC": {
+        "subject": "Cellular Network Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "PEC-321-ETC": {
+        "subject": "Programme Elective I",
+        "type": "PEC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "elective_options": [
+            "Cloud Computing",
+            "Advanced Java Programming"
+        ]
+    },
+    "PEC-322-ETC": {
+        "subject": "Programme Elective Lab",
+        "type": "PEC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "MDM-331-ETC": {
+        "subject": "Machine Learning",
+        "type": "MDM",
+        "theory_hours": 0,
+        "tutorial_hours": 2,
+        "practical_hours": 2
+    },
+    "OLE-341-ETC": {
+        "subject": "Open Elective",
+        "type": "OLE",
+        "theory_hours": 2,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "current_subject": "Sustainability Development"
+    },
+    "ELC-342-ETC": {
+        "subject": "Technical Seminar",
+        "type": "ELC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    }
+}

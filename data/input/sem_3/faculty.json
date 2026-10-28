@@ -1,0 +1,107 @@
+{
+    "faculty": {
+        "PSG": {
+            "name": "Poonam Gham",
+            "expertise_status": "pending",
+            "theory": [
+                "Cloud Computing"
+            ],
+            "tutorial": [],
+            "practical": [
+                "Cloud Computing Lab",
+                "Cellular Network Lab"
+            ]
+        },
+        "RG": {
+            "name": "Rohit Gawde",
+            "expertise_status": "pending",
+            "theory": [
+                "Advanced Java Programming"
+            ],
+            "tutorial": [],
+            "practical": [
+                "Advanced Java Programming Lab",
+                "Programme Elective Lab"
+            ]
+        },
+        "RGZ": {
+            "name": "R.Z. Zope",
+            "expertise_status": "pending",
+            "theory": [
+                "Cellular Network"
+            ],
+            "tutorial": [],
+            "practical": []
+        },
+        "MD": {
+            "name": "Manoj Deshmukh",
+            "expertise_status": "pending",
+            "theory": [
+                "Microcontrollers & Applications"
+            ],
+            "tutorial": [],
+            "practical": [
+                "Microcontrollers & VLSI Design Lab",
+                "Technical Seminar"
+            ]
+        },
+        "GSK": {
+            "name": "Ganesh Kadam",
+            "expertise_status": "pending",
+            "theory": [
+                "Sustainability Development"
+            ],
+            "tutorial": [],
+            "practical": []
+        },
+        "VDG": {
+            "name": "Vivek Ghanekar",
+            "expertise_status": "pending",
+            "theory": [],
+            "tutorial": [
+                "Machine Learning"
+            ],
+            "practical": [
+                "Machine Learning Practical"
+            ]
+        },
+        "SJK": {
+            "name": "Shilpa Kale",
+            "expertise_status": "pending",
+            "theory": [],
+            "tutorial": [],
+            "practical": [
+                "Machine Learning Practical"
+            ]
+        },
+        "SP": {
+            "name": "Sabhiha Parveen",
+            "expertise_status": "pending",
+            "theory": [
+                "VLSI Design"
+            ],
+            "tutorial": [],
+            "practical": [
+                "Microcontrollers & VLSI Design Lab"
+            ]
+        },
+        "DEMO-MATH": {
+            "name": "Demo Mathematics Faculty",
+            "expertise_status": "pending",
+            "theory": [
+                "Engineering Mathematics-III"
+            ],
+            "tutorial": [],
+            "practical": []
+        },
+        "DEMO-ECON": {
+            "name": "Demo Economics Faculty",
+            "expertise_status": "pending",
+            "theory": [
+                "Engineering Economics & Applications"
+            ],
+            "tutorial": [],
+            "practical": []
+        }
+    }
+}

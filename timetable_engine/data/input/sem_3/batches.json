@@ -1,0 +1,18 @@
+{
+    "configured": true,
+    "total_students": 80,
+    "number_of_batches": 2,
+    "batches": [
+        {
+            "code": "S1",
+            "students": 40,
+            "elective": ""
+        },
+        {
+            "code": "S2",
+            "students": 40,
+            "elective": ""
+        }
+    ],
+    "notes": "Estimated intake: approximately 80 students split into S1 and S2. Update counts and batch entries as official enrolment changes. Keep total_students equal to the sum of batch student counts and number_of_batches equal to the number of batch entries."
+}

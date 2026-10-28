@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Submission Saved</title><link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}"></head>
+<body>
+<main class="success-page">
+  <div class="success-icon">✓</div>
+  <h1>Data saved successfully</h1>
+  <p>Your ENTC timetable data collection submission has been stored.</p>
+  <div class="submission-id">Submission ID<br><strong>{{ submission_id }}</strong></div>
+  <p class="muted">The uploaded documents are stored with this submission. Version 1 does not generate the timetable yet.</p>
+  <a class="button" href="{{ url_for('index') }}">Create another submission</a>
+</main>
+</body>
+</html>

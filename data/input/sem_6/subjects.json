@@ -1,0 +1,84 @@
+{
+    "PCC-351-ETC": {
+        "subject": "Embedded System Design",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-352-ETC": {
+        "subject": "Broad Band Communication",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-353-ETC": {
+        "subject": "Embedded System Design Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "PCC-354-ETC": {
+        "subject": "Broad Band Communication Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "PEC-361-ETC": {
+        "subject": "Programme Elective II",
+        "type": "PEC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "elective_options": [
+            "Web Technology",
+            "Digital Image Processing",
+            "Network & Cyber Security",
+            "CMOS Process Technology"
+        ]
+    },
+    "PEC-362-ETC": {
+        "subject": "Programme Elective III",
+        "type": "PEC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0,
+        "elective_options": [
+            "Power Electronics",
+            "Robotics & Automation",
+            "Artificial Intelligence",
+            "Industrial IOT"
+        ]
+    },
+    "PEC-363-ETC": {
+        "subject": "Programme Elective II & III Lab",
+        "type": "PEC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "MDM-371-ETC": {
+        "subject": "Database Management System",
+        "type": "MDM",
+        "theory_hours": 0,
+        "tutorial_hours": 1,
+        "practical_hours": 2
+    },
+    "VSE-372-ETC": {
+        "subject": "Mini-Project",
+        "type": "VSE",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "ELC-381-ETC": {
+        "subject": "Internship/OJT",
+        "type": "ELC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 8
+    }
+}

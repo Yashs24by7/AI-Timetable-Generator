@@ -1,0 +1,79 @@
+{
+    "PCC-205-ETC": {
+        "subject": "Communication Engineering",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-206-ETC": {
+        "subject": "Signals and Systems",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-207-ETC": {
+        "subject": "Control Systems",
+        "type": "PCC",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-208-ETC": {
+        "subject": "Communication Engineering Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "OE2-ETC": {
+        "subject": "Open Elective II",
+        "type": "OE",
+        "theory_hours": 2,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "MDM-232-ETC": {
+        "subject": "Object-Oriented Programming",
+        "type": "MDM",
+        "theory_hours": 3,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    },
+    "PCC-209-ETC": {
+        "subject": "Signals & Systems and Object-Oriented Programming Lab",
+        "type": "PCC",
+        "theory_hours": 0,
+        "tutorial_hours": 0,
+        "practical_hours": 2
+    },
+    "VSE-270-ETC": {
+        "subject": "Electronics Skill Development Lab",
+        "type": "VSE",
+        "theory_hours": 0,
+        "tutorial_hours": 1,
+        "practical_hours": 2
+    },
+    "AEC-281-ETC": {
+        "subject": "Modern Indian Languages (Marathi/Hindi)",
+        "type": "AEC",
+        "theory_hours": 0,
+        "tutorial_hours": 1,
+        "practical_hours": 2
+    },
+    "EEM-241-ETC": {
+        "subject": "Entrepreneurship Skill Development",
+        "type": "EEM",
+        "theory_hours": 0,
+        "tutorial_hours": 1,
+        "practical_hours": 2
+    },
+    "VEC-251-ETC": {
+        "subject": "Environment Awareness",
+        "type": "VEC",
+        "theory_hours": 2,
+        "tutorial_hours": 0,
+        "practical_hours": 0
+    }
+}

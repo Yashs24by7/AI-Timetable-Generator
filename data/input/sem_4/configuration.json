@@ -1,0 +1,21 @@
+﻿{
+    "batch_mapping":  {
+
+                      },
+    "elective_selections":  {
+
+                            },
+    "room_assignments":  {
+
+                         },
+    "configured":  false,
+    "total_students":  null,
+    "faculty_assignments":  {
+
+                            },
+    "notes":  "Semester-specific scheduling configuration is pending.",
+    "number_of_batches":  null,
+    "teaching_groups":  {
+
+                        }
+}

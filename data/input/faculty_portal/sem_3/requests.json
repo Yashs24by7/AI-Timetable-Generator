@@ -1,0 +1,54 @@
+{
+  "requests": [
+    {
+      "request_id": "335beb51d0f1775a",
+      "submitted_at": "2026-10-15T16:20:07",
+      "semester": 3,
+      "faculty_code": "DEMO01",
+      "faculty_username": "faculty_demo01",
+      "faculty_name": "Demo Faculty One",
+      "selected_subject_codes": [
+        "PCC-202-ETC",
+        "PCC-203-ETC"
+      ],
+      "selected_subject_names": [
+        "Engineering Mathematics-III",
+        "Digital Electronics"
+      ],
+      "proposed_subject": null,
+      "unavailable_slots": [
+        "Monday|P2",
+        "Friday|P1"
+      ],
+      "preferred_slots": [
+        "Monday|P1",
+        "Wednesday|P2"
+      ],
+      "status": "approved",
+      "admin_note": "Demo review completed. Preferences recorded for testing only; official faculty assignment and curriculum remain unchanged.",
+      "reviewed_at": "2026-10-15T16:26:31"
+    },
+    {
+      "request_id": "1004ed526f4e3d02",
+      "submitted_at": "2026-10-15T16:29:24",
+      "semester": 3,
+      "faculty_code": "DEMO01",
+      "faculty_username": "faculty_demo01",
+      "faculty_name": "Demo Faculty One",
+      "selected_subject_codes": [
+        "PCC-203-ETC"
+      ],
+      "selected_subject_names": [
+        "Digital Electronics"
+      ],
+      "proposed_subject": null,
+      "unavailable_slots": [],
+      "preferred_slots": [
+        "Tuesday|P1"
+      ],
+      "status": "rejected",
+      "admin_note": "Demo rejection test only. No official faculty assignment or curriculum change is implied.",
+      "reviewed_at": "2026-10-15T16:35:22"
+    }
+  ]
+}

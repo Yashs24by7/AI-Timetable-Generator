@@ -1,0 +1,10 @@
+﻿{
+    "_schema": {
+        "description": "Semester-specific room configuration",
+        "room_fields": {
+            "capacity": "Maximum number of students",
+            "type": "classroom or lab"
+        }
+    },
+    "rooms": {}
+}

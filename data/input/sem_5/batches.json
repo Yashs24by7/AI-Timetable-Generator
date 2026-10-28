@@ -1,0 +1,17 @@
+{
+    "T1": {
+        "students": 32,
+        "roll_range": "1-32",
+        "elective": "Cloud Computing"
+    },
+    "T2": {
+        "students": 31,
+        "roll_range": "33-63",
+        "elective": "Cloud Computing"
+    },
+    "T3": {
+        "students": 17,
+        "roll_range": "64-80",
+        "elective": "Advanced Java Programming"
+    }
+}

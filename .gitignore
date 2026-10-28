@@ -1,0 +1,74 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.env
+*.log
+.vscode/
+.idea/
+*.bak
+*.backup*
+*.before_*
+*.pyc
+
+# Python cache and virtual environments
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local secrets and faculty account data
+.env
+.env.*
+!.env.example
+data/input/faculty_portal/faculty_accounts.json
+data/input/faculty_portal/faculty_accounts.json.*
+data/input/faculty_portal/requests.json
+
+# Backups and temporary files
+*.bak
+*.backup*
+*.before_*
+*.backup_*
+*.log
+
+# Local uploaded submissions
+web_form/submissions/*
+!web_form/submissions/.gitkeep
+
+# Editor files
+.vscode/
+.idea/
+
+# Historical semester test and backup folders
+data/input/sem_*_before_*/
+data/input/sem_*_backup_*/
+data/input/sem_3_before_save_test/
+data/input/sem_3_json_backup_*/
+data/input/sem_3/sem_3/
+timetable_engine/backup_*/
+timetable_engine/timetable_engine/
+
+# Historical source versions
+timetable_engine/*_before_*.py
+timetable_engine/*_backup*.py
+timetable_engine/*backup*.py
+timetable_engine/*.bak
+web_form/app*.bak
+web_form/app*.backup*
+web_form/app*.before_*
+web_form/templates/*.bak
+web_form/templates/*.backup*
+web_form/templates/*.before_*
+
+# Alternate or backup web application files
+web_form/app2.py
+web_form/app_backup*.py
+web_form/app_backup_before_grid.py
+
+# Generated schedule backups
+output/schedule/final_backup/
+
+# Older configuration snapshots
+data/input/*/configuration_before_resources.json
+data/input/*/subjects_before_configuration_layer.json
